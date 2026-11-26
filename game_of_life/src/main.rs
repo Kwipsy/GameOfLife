@@ -2,13 +2,7 @@ mod grid;
 
 use std::{
     thread::sleep,
-    time::Duration,
-    io::{self, stdout}
-};
-use crossterm::{
-    cursor::MoveTo,
-    execute,
-    terminal::{Clear, ClearType}
+    time::Duration
 };
 
 use grid::Grid;
@@ -23,7 +17,6 @@ fn main() {
     g.set(2, 1, true);
 
     loop {
-        execute!(stdout(), Clear(ClearType::All), MoveTo(0,0)).unwrap();
         g.print();
         std::thread::sleep(WAIT_TIME);
         g.step();
