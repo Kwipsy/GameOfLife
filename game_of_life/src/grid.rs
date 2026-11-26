@@ -28,15 +28,41 @@ impl Grid {
         (1, 1),
     ];
 
+    fn index(&self, x: usize, y: usize) -> usize {
+        y * self.width + x
+    }
+
+    fn index_to(&self, index: usize) -> (usize, usize) {
+        (index % self.width, index / self.width)
+    }
+
     pub fn get(&self, x: usize, y: usize) -> Option<bool> {
         if x < self.width && y < self.height {
-            return Some(self.cells[y * self.width + x]);
+            return Some(self.cells[self.index(x, y)]);
         }
         None
     }
 
+    fn get_mut(&mut self, x: usize, y: usize) -> Option<&mut bool> {
+        if x < self.width && y < self.height {
+            let index = self.index(x, y);
+            return Some(&mut self.cells[index]);
+        }
+        None
+    }
+
+    pub fn get_alive_cells(&self) -> impl Iterator<Item = (usize, usize)> {
+        self.cells
+            .iter()
+            .enumerate()
+            .filter(|&(_,&isalive)| isalive)
+            .map(|(index, _)| self.index_to(index))
+    }
+
     pub fn set(&mut self, x: usize, y: usize, is_alive: bool) {
-        self.cells[y * self.width + x] = is_alive;
+        if let Some(cell) = self.get_mut(x, y) {
+            *cell = is_alive
+        }
     }
 
     pub fn count_neighbors(&self, x: usize, y: usize) -> usize {
@@ -59,7 +85,7 @@ impl Grid {
             .iter()
             .enumerate()
             .map(|(i, &state)| {
-                let (x, y) = (i % self.width, i / self.width);
+                let (x, y) = self.index_to(i);
                 let neighbors = self.count_neighbors(x, y);
                 match neighbors {
                     3 => true,
@@ -68,12 +94,5 @@ impl Grid {
                 }
             })
             .collect();
-    }
-
-    pub fn print(&self) {
-        for row in self.cells.chunks(self.width) {
-            let row: String = row.iter().map(|&b| if b { '#' } else { '.' }).collect();
-            println!("{}", row);
-        }
     }
 }
