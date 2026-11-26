@@ -10,14 +10,27 @@ pub struct Grid {
 
 impl Grid {
     pub fn new(width: usize, height: usize) -> Self {
-        Grid { width, height, cells: vec![false; width * height] }
+        Grid {
+            width,
+            height,
+            cells: vec![false; width * height],
+        }
     }
 
-    const NEIGHBORHOOD: [(isize, isize); 8] = [(-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)];
+    const NEIGHBORHOOD: [(isize, isize); 8] = [
+        (-1, -1),
+        (0, -1),
+        (1, -1),
+        (-1, 0),
+        (1, 0),
+        (-1, 1),
+        (0, 1),
+        (1, 1),
+    ];
 
     pub fn get(&self, x: usize, y: usize) -> Option<bool> {
         if x < self.width && y < self.height {
-            return Some(self.cells[y * self.width + x])
+            return Some(self.cells[y * self.width + x]);
         }
         None
     }
@@ -41,7 +54,8 @@ impl Grid {
     }
 
     pub fn step(&mut self) {
-        self.cells = self.cells
+        self.cells = self
+            .cells
             .iter()
             .enumerate()
             .map(|(i, &state)| {
@@ -50,7 +64,7 @@ impl Grid {
                 match neighbors {
                     3 => true,
                     2 => state,
-                    _ => false
+                    _ => false,
                 }
             })
             .collect();
@@ -58,10 +72,7 @@ impl Grid {
 
     pub fn print(&self) {
         for row in self.cells.chunks(self.width) {
-            let row: String = row
-                .iter()
-                .map(|&b| if b {'#'} else {'.'})
-                .collect();
+            let row: String = row.iter().map(|&b| if b { '#' } else { '.' }).collect();
             println!("{}", row);
         }
     }
