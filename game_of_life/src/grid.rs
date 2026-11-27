@@ -65,6 +65,12 @@ impl Grid {
         }
     }
 
+    pub fn flip(&mut self, x: usize, y: usize) {
+        if let Some(cell) = self.get_mut(x, y) {
+            *cell = !*cell;
+        }
+    }
+
     pub fn count_neighbors(&self, x: usize, y: usize) -> usize {
         Self::NEIGHBORHOOD
             .into_iter()
