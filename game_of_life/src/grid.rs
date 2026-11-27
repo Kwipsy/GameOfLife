@@ -55,7 +55,7 @@ impl Grid {
         self.cells
             .iter()
             .enumerate()
-            .filter(|&(_,&isalive)| isalive)
+            .filter(|&(_, &isalive)| isalive)
             .map(|(index, _)| self.index_to(index))
     }
 

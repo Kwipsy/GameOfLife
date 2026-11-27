@@ -1,8 +1,6 @@
 mod grid;
-use macroquad::{
-    prelude::*,
-};
 use grid::Grid;
+use macroquad::prelude::*;
 
 const CELL_SIZE: f32 = 10.0; // Size of cells in pixels
 
@@ -12,11 +10,10 @@ async fn main() {
     const SECONDS_PER_STEP: f32 = 0.5; // Seconds per 'step' aka generation
     let mut time_elapsed: f32 = 0.0; // Time since last step
     let mut paused: bool = false;
-    
+
     grid.set(10, 10, true);
     grid.set(11, 10, true);
     grid.set(12, 10, true);
-
 
     loop {
         clear_background(WHITE);
@@ -29,11 +26,18 @@ async fn main() {
         if is_key_pressed(KeyCode::Space) {
             paused = !paused;
         }
-        
+
         if paused {
-            draw_text("PAUSED", screen_width() - 200.0, screen_height() - 60.0, 50.0, DARKGRAY);
-            if is_mouse_button_pressed(MouseButton::Left) {
-                let (x, y) = pixels_to_coords(mouse_position());
+            draw_text(
+                "PAUSED",
+                screen_width() - 200.0,
+                screen_height() - 60.0,
+                50.0,
+                DARKGRAY,
+            );
+            if is_mouse_button_pressed(MouseButton::Left)
+                && let Some((x, y)) = pixels_to_coords(mouse_position()) 
+            {
                 grid.flip(x, y);
             }
         } else {
@@ -51,6 +55,6 @@ fn coords_to_pixels(x: usize, y: usize) -> (f32, f32) {
     (x as f32 * CELL_SIZE, y as f32 * CELL_SIZE)
 }
 
-fn pixels_to_coords((x, y): (f32, f32)) -> (usize, usize) {
-    ((x / CELL_SIZE) as usize, (y / CELL_SIZE) as usize)
+fn pixels_to_coords((x, y): (f32, f32)) -> Option<(usize, usize)> {
+    (0.0 <= x && 0.0 <= y).then_some(((x / CELL_SIZE) as usize, (y / CELL_SIZE) as usize))
 }
