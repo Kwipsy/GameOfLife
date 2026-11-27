@@ -15,9 +15,9 @@ with [macroquad](https://macroquad.rs/). Built as my first real Rust project.
 You need a recent [Rust toolchain](https://rustup.rs/). Then:
 
 ```
-git clone <repo-url>
+git clone https://github.com/Kwipsy/game_of_life.git
 cd game-of-life
-cargo run --release
+cargo run
 ```
 
 ## How it works
