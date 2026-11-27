@@ -11,6 +11,7 @@ async fn main() {
     let mut time_elapsed: f32 = 0.0; // Time since last step
     let mut paused: bool = false;
 
+    // I'm keeping these here, just to have an initial state :)
     grid.set(10, 10, true);
     grid.set(11, 10, true);
     grid.set(12, 10, true);
